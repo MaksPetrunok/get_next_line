@@ -18,22 +18,26 @@
 //manage multiple file descriptors
 
 /*
-** Check if string *s contains \n. If it does - set *s equal string before \n
-** and write remaining part (after \n to the list as remainder.
+** Append buffer before \n to str, write buffer remainder ot rem_buff
+** and return 1.
+** If there is no \n in buffer append entire buffer to str and return 0.
+** If there is no buffer return -1.
 */
-static int	get_line(char **s, t_list rem)
+static int	append_buff(char *buff, char **str, t_list *rem)
 {
-
+    return (0);
 }
 
 /*
-** Check if rem_buff list has remainder for file descriptor fd. If it does -
-** remove part of string before \n (or entire string if there is no \n) from
-** rem_buff and return it.
+** Check if rem_buff list has remainder for file descriptor fd.
+** If it does:
+** — if remainder contains \n - copy remainder before \n and return 1.
+** - if there is no \n in remainder - copy remainder to str and return 0.
+** If there is no remainder for fd - return 0.
 */
-static char	get_rem(int fd, t_list rem_buff)
+static int	get_rem(int fd, t_list rem_buff, char *str)
 {
-
+    return (0);
 }
 
 int	get_next_line(const int fd, char **line)
@@ -43,19 +47,21 @@ int	get_next_line(const int fd, char **line)
 	char			*tmp;
 	int				n;
 
-	tmp = get_rem(fd, rem_buff);
-	if (get_line(&tmp, rem_buff))
-	{
-		*line = tmp;
-		return (1);
+    tmp = 0;
+    if (get_rem(fd, rem_buff, &tmp))
+    {
+	   	*line = tmp;
+    	return (1);
 	}
 	while (n = read(fd, &buff, BUFF_SIZE))
 	{
 		buff[n] = 0;
-		if (
-		*line = buff;
-		return (1);
+		if (append_buff(buff, &tmp, rem_buff))
+		{
+	    	*line = buff;
+	    	return (1);
+		}
 	}
-
+	//check what’s going on when \n not found or file is empty.
 	return (0);
 }
