@@ -1,0 +1,4 @@
+File 1, line 1.
+File 1, line 2 (next line is empty - \n only).
+
+File 1, line 4 (previous line is empty - \n only). This is last line ending with \n.

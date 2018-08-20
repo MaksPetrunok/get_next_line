@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 18:30:32 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/08/14 18:37:32 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/08/20 15:26:53 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 # include "libft.h"
 
 # define BUFF_SIZE 10
+
+typedef struct	s_rem
+{
+	int			id;
+	char		*str;
+}				t_rem;
 
 int	get_next_line(const int fd, char **line);
 
