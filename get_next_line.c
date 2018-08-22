@@ -6,43 +6,38 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 18:30:11 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/08/20 18:59:24 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/08/22 15:10:44 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h> // !!!!!!!!!!!!!!!! REMOVE BEFORE FLIGHT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#include <stdio.h> // !!!!!!!!!!!! REMOVE BEFORE FLIGHT !!!!!!!!!!!!!!!!!!!
 
 //BONUSES:
 //use single static variable
 //manage multiple file descriptors
 
-static void	set_rem_buff(t_list **rem, int fd, char *str)
+//empty lines with \n - what the output is?
+
+static int	set_rem_buff(t_list **rem, int fd, char *str)
 {
 	t_list	*cur;
 	t_rem	*tmp;
 
-	if (*str == '\0')
-		return ;
-	tmp = 0;
-if (*rem)
-{
+	if (str == 0 || *str == '\0')
+		return (0);
 	cur = *rem;
-	while (cur)
+	while ((tmp = 0) == 0 && cur)
 	{
-		tmp = (t_rem *)(cur->content);
-		if (tmp->id == fd)
+		if ((tmp = (t_rem *)(cur->content)) && tmp->id == fd)
 		{
-			if (tmp->str != 0)
-				free((void *)(tmp->str));
-			tmp->str = str;
-			return ;
+			free((void *)(tmp->str));
+			return ((tmp->str = str) != 0);
 		}
 		cur = cur->next;
 	}
-}
-	tmp = (t_rem *)malloc(sizeof(t_rem));
-	//add protection for NULL here if needed
+	if ((tmp = (t_rem *)malloc(sizeof(t_rem))) == 0)
+		return (-1);
 	tmp->id = fd;
 	tmp->str = str;
 	if (*rem)
@@ -50,6 +45,7 @@ if (*rem)
 	else
 		*rem = ft_lstnew((void *)tmp, sizeof(t_rem));
 	free((void *)tmp);
+	return (1);
 }
 
 /*
@@ -57,6 +53,7 @@ if (*rem)
 ** and return 1.
 ** If there is no \n in buffer append entire buffer to str and return 0.
 */
+
 static int	append_buff(char *buff, char **str, int fd, t_list **rem)
 {
 	size_t	i;
@@ -68,20 +65,27 @@ static int	append_buff(char *buff, char **str, int fd, t_list **rem)
 		i++;
 	flag = (buff[i] == '\n');
 	buff[i] = '\0';
-
-	tmp = ft_strnew(ft_strlen(buff) + ((*str == 0) ? 0 : ft_strlen(*str)));
-	if (tmp == 0)
-		return (-1);
-	tmp =(*str == 0) ? ft_strcpy(tmp, buff) : ft_strcat(ft_strcpy(tmp, *str), buff);
+	if (*str != 0)
+	{
+		if (i != 0 && (tmp = ft_strjoin(*str, buff)) == 0)
+			return (-1);
+		if (i == 0 && (tmp = ft_strdup(*str)) == 0)
+			return (-1);
+	}
+	else
+		tmp = (i != 0) ? ft_strdup(buff) : 0;
+//	if (tmp == 0 && *buff != '\0')
+//		return (-1);
 	free((void *)(*str));
 	*str = tmp;
 
-	if (flag)
-	{
-		set_rem_buff(rem, fd, ft_strdup(buff + i + 1));
-	}
+while (buff[i] == '\n')
+	i++;
+i--;
 
-    return (flag);
+	if (flag && buff[i + 1] != '\0')
+		set_rem_buff(rem, fd, ft_strdup(buff + i + 1));
+	return (flag);
 }
 
 /*
@@ -91,38 +95,37 @@ static int	append_buff(char *buff, char **str, int fd, t_list **rem)
 ** - if there is no \n in remainder - copy remainder to str and return 0.
 ** If there is no remainder for fd - return 0.
 */
+
 static int	get_rem(int fd, t_list *rem, char **str)
 {
-	t_list	*cur;
 	t_rem	*tmp;
 	char	*s;
 	size_t	i;
 	int		flag;
 
-	tmp = 0;
-	cur = rem;
-	while (cur)
-	{
-		if (((t_rem *)(cur->content))->id == fd)
+	while (rem)
+		if (((t_rem *)(rem->content))->id == fd)
 			break ;
-		cur = cur->next;
-	}
-	if (cur == 0)
+		else
+			rem = rem->next;
+	if (rem == 0)
 		return (0);
-	tmp = (t_rem *)(cur->content);
-	if ((s = tmp->str) == 0)
+	tmp = (t_rem *)(rem->content);
+	if ((s = tmp->str) == 0 || *s == '\0')
 		return (0);
 	i = 0;
 	while (s[i] && s[i] != '\n')
 		i++;
-	tmp->str = (flag = (s[i] == '\n')) ? ft_strdup(s + i + 1) : 0;
+	tmp->str = 0;
+	if ((flag = (s[i] == '\n')) && s[i + 1] != '\0')
+		tmp->str = ft_strdup(s + i + 1);
 	s[i] = '\0';
 	*str = ft_strdup(s);
 	free((void *)s);
 	return (flag);
 }
 
-int	get_next_line(const int fd, char **line)
+int			get_next_line(const int fd, char **line)
 {
 	static t_list	*rem_buff;
 	char			buff[BUFF_SIZE + 1];
@@ -130,29 +133,25 @@ int	get_next_line(const int fd, char **line)
 	int				n;
 	int				append;
 
-    tmp = 0;
-    if (get_rem(fd, rem_buff, &tmp))
-    {
-	   	*line = tmp;
-    	return (1);
+	tmp = 0;
+	if (get_rem(fd, rem_buff, &tmp))
+	{
+//		*line = (tmp == 0) ? *line : tmp;
+		*line = tmp;
+		return (1);
 	}
 	while ((n = read(fd, &buff, BUFF_SIZE)) > 0)
 	{
 		buff[n] = '\0';
 		if ((append = append_buff(buff, &tmp, fd, &rem_buff)) == 1)
-	    	*line = tmp;
+//			*line = (tmp == 0) ? *line : tmp;
+			*line = tmp;
 		if (append == 1 || append == -1)
-	    	return (append);
+			return (append);
 	}
-	if (n == 0 && tmp == 0)
-		*line = 0;
 	if (n == -1)
 		return (-1);
-	if (tmp != 0)
-	{
-		*line = tmp;
-		free((void *)tmp);
-	}
-	return ((tmp == 0) ? 0 : 1);
+	*line = tmp;
+	return (tmp != 0);
 	//check what’s going on when \n not found or file is empty.
 }

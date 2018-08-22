@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/14 18:30:32 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/08/22 14:25:31 by mpetruno         ###   ########.fr       */
+/*   Created: 2018/06/05 17:46:05 by mpetruno          #+#    #+#             */
+/*   Updated: 2018/06/05 17:46:32 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-
-# include "./libft/libft.h"
-
-# define BUFF_SIZE 1
-
-typedef struct	s_rem
+int	ft_tolower(int c)
 {
-	int			id;
-	char		*str;
-}				t_rem;
-
-int				get_next_line(const int fd, char **line);
-
-#endif
+	if (c >= 'A' && c <= 'Z')
+		return (c - ('A' - 'a'));
+	return (c);
+}

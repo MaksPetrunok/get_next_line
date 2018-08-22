@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/14 18:30:32 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/08/22 14:25:31 by mpetruno         ###   ########.fr       */
+/*   Created: 2018/06/04 15:56:01 by mpetruno          #+#    #+#             */
+/*   Updated: 2018/06/20 16:53:04 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include "./libft/libft.h"
-
-# define BUFF_SIZE 1
-
-typedef struct	s_rem
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	int			id;
-	char		*str;
-}				t_rem;
+	size_t			i;
+	unsigned char	*p1;
+	unsigned char	*p2;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	p1 = (void *)s1;
+	p2 = (void *)s2;
+	i = 0;
+	while (i < n)
+	{
+		if (*(p1 + i) != *(p2 + i))
+			return (p1[i] - p2[i]);
+		i++;
+	}
+	return (0);
+}

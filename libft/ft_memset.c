@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/14 18:30:32 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/08/22 14:25:31 by mpetruno         ###   ########.fr       */
+/*   Created: 2018/05/25 18:45:10 by mpetruno          #+#    #+#             */
+/*   Updated: 2018/06/10 21:22:24 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include "./libft/libft.h"
-
-# define BUFF_SIZE 1
-
-typedef struct	s_rem
+void	*ft_memset(void *b, int c, size_t len)
 {
-	int			id;
-	char		*str;
-}				t_rem;
+	size_t			i;
+	unsigned char	*ptr;
+	unsigned char	val;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	ptr = (unsigned char *)b;
+	val = (unsigned char)c;
+	i = 0;
+	while (i < len)
+		ptr[i++] = val;
+	return (b);
+}

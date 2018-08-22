@@ -1,28 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/14 18:30:32 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/08/22 14:25:31 by mpetruno         ###   ########.fr       */
+/*   Created: 2018/06/10 17:45:23 by mpetruno          #+#    #+#             */
+/*   Updated: 2018/06/10 21:30:13 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include "./libft/libft.h"
-
-# define BUFF_SIZE 1
-
-typedef struct	s_rem
+static int	get_size(int n)
 {
-	int			id;
-	char		*str;
-}				t_rem;
+	int	res;
 
-int				get_next_line(const int fd, char **line);
+	res = 1;
+	while (n > 9 || n < -9)
+	{
+		res *= 10;
+		n /= 10;
+	}
+	return (res);
+}
 
-#endif
+void		ft_putnbr_fd(int n, int fd)
+{
+	int	pow;
+	int	c;
+
+	pow = get_size(n);
+	if (n < 0)
+		ft_putchar_fd('-', fd);
+	while (pow != 0)
+	{
+		c = n / pow;
+		ft_putchar_fd((c < 0) ? '0' - c : '0' + c, fd);
+		n = n % pow;
+		pow = pow / 10;
+	}
+}

@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/14 18:30:32 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/08/22 14:25:31 by mpetruno         ###   ########.fr       */
+/*   Created: 2018/06/04 15:57:02 by mpetruno          #+#    #+#             */
+/*   Updated: 2018/06/04 15:57:04 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-
-# include "./libft/libft.h"
-
-# define BUFF_SIZE 1
-
-typedef struct	s_rem
+char	*ft_strcat(char *dest, const char *src)
 {
-	int			id;
-	char		*str;
-}				t_rem;
+	char	*p;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	p = dest;
+	while (*p)
+		p++;
+	while (*src)
+		*p++ = *src++;
+	*p = 0;
+	return (dest);
+}

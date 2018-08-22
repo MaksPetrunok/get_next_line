@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/14 18:30:32 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/08/22 14:25:31 by mpetruno         ###   ########.fr       */
+/*   Created: 2018/06/01 11:58:22 by mpetruno          #+#    #+#             */
+/*   Updated: 2018/06/10 21:22:56 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include "./libft/libft.h"
-
-# define BUFF_SIZE 1
-
-typedef struct	s_rem
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	int			id;
-	char		*str;
-}				t_rem;
+	unsigned char	*s;
+	unsigned char	*d;
+	size_t			i;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	if (src == dst)
+		return (dst);
+	if (src > dst)
+		return (ft_memcpy(dst, src, len));
+	d = (unsigned char *)dst;
+	s = (unsigned char *)src;
+	i = len;
+	while (i != 0)
+	{
+		*(d + i - 1) = *(s + i - 1);
+		i--;
+	}
+	return (dst);
+}

@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/14 18:30:32 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/08/22 14:25:31 by mpetruno         ###   ########.fr       */
+/*   Created: 2018/06/07 18:14:43 by mpetruno          #+#    #+#             */
+/*   Updated: 2018/06/18 20:35:40 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-
-# include "./libft/libft.h"
-
-# define BUFF_SIZE 1
-
-typedef struct	s_rem
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
-	int			id;
-	char		*str;
-}				t_rem;
+	unsigned int	i;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	if (s && f)
+		while (s[i])
+		{
+			f(i, &s[i]);
+			i++;
+		}
+}
