@@ -73,16 +73,9 @@ static int	append_buff(char *buff, char **str, int fd, t_list **rem)
 			return (-1);
 	}
 	else
-		tmp = (i != 0) ? ft_strdup(buff) : 0;
-//	if (tmp == 0 && *buff != '\0')
-//		return (-1);
+		tmp = (i != 0) ? ft_strdup(buff) : ft_strnew(0);
 	free((void *)(*str));
 	*str = tmp;
-
-while (buff[i] == '\n')
-	i++;
-i--;
-
 	if (flag && buff[i + 1] != '\0')
 		set_rem_buff(rem, fd, ft_strdup(buff + i + 1));
 	return (flag);
@@ -136,7 +129,6 @@ int			get_next_line(const int fd, char **line)
 	tmp = 0;
 	if (get_rem(fd, rem_buff, &tmp))
 	{
-//		*line = (tmp == 0) ? *line : tmp;
 		*line = tmp;
 		return (1);
 	}
@@ -144,14 +136,13 @@ int			get_next_line(const int fd, char **line)
 	{
 		buff[n] = '\0';
 		if ((append = append_buff(buff, &tmp, fd, &rem_buff)) == 1)
-//			*line = (tmp == 0) ? *line : tmp;
 			*line = tmp;
 		if (append == 1 || append == -1)
 			return (append);
 	}
 	if (n == -1)
 		return (-1);
-	*line = tmp;
+	*line = (tmp == 0) ? ft_strnew(0) : tmp;
 	return (tmp != 0);
 	//check what’s going on when \n not found or file is empty.
 }
