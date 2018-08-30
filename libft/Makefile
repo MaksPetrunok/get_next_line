@@ -6,7 +6,7 @@
 #    By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/25 18:27:37 by mpetruno          #+#    #+#              #
-#    Updated: 2018/06/18 20:59:23 by mpetruno         ###   ########.fr        #
+#    Updated: 2018/08/30 18:11:39 by mpetruno         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,4 +95,4 @@ fclean: clean
 re: fclean all
 
 %.o: %.c
-	$(CC) -c $^ $(FLAGS)
+	$(CC) -c $^ $(FLAGS) -I includes/
