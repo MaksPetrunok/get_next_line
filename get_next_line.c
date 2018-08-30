@@ -6,18 +6,11 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/14 18:30:11 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/08/22 15:10:44 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/08/30 15:51:05 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h> // !!!!!!!!!!!! REMOVE BEFORE FLIGHT !!!!!!!!!!!!!!!!!!!
-
-//BONUSES:
-//use single static variable
-//manage multiple file descriptors
-
-//empty lines with \n - what the output is?
 
 static int	set_rem_buff(t_list **rem, int fd, char *str)
 {
@@ -48,12 +41,6 @@ static int	set_rem_buff(t_list **rem, int fd, char *str)
 	return (1);
 }
 
-/*
-** Append buffer before \n to str, write buffer remainder ot rem_buff
-** and return 1.
-** If there is no \n in buffer append entire buffer to str and return 0.
-*/
-
 static int	append_buff(char *buff, char **str, int fd, t_list **rem)
 {
 	size_t	i;
@@ -80,14 +67,6 @@ static int	append_buff(char *buff, char **str, int fd, t_list **rem)
 		set_rem_buff(rem, fd, ft_strdup(buff + i + 1));
 	return (flag);
 }
-
-/*
-** Check if rem_buff list has remainder for file descriptor fd.
-** If it does:
-** - if remainder contains \n - copy remainder before \n and return 1.
-** - if there is no \n in remainder - copy remainder to str and return 0.
-** If there is no remainder for fd - return 0.
-*/
 
 static int	get_rem(int fd, t_list *rem, char **str)
 {
@@ -144,5 +123,4 @@ int			get_next_line(const int fd, char **line)
 		return (-1);
 	*line = (tmp == 0) ? ft_strnew(0) : tmp;
 	return (tmp != 0);
-	//check what’s going on when \n not found or file is empty.
 }
